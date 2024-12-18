@@ -1,0 +1,43 @@
+def identify_intermolecular_forces(smiles):
+    # Check for the presence of key functional groups for hydrogen bonding
+    # Hydrogens attached to O, N, or F atoms are potential hydrogen bond donors
+    hydrogen_bonding_donors = ['O', 'N', 'F']
+    
+    # Convert SMILES to a simplified analysis by looking for specific atoms/groups
+    forces = []
+
+    # 1. Check for Hydrogen Bonding: Look for hydrogen attached to electronegative atoms (O, N, F)
+    if any(ele in smiles for ele in hydrogen_bonding_donors):
+        forces.append("Hydrogen Bonding")
+
+    # 2. Check for Dipole-Dipole Interactions: Look for polar molecules (Presence of electronegative atoms)
+    electronegative_atoms = ['O', 'N', 'F', 'Cl', 'Br', 'I']
+    polar = any(ele in smiles for ele in electronegative_atoms)
+    
+    if polar:
+        forces.append("Dipole-Dipole Interactions")
+    
+    # 3. London Dispersion Forces: All molecules experience London Dispersion Forces.
+    # These are typically most prominent in non-polar molecules.
+    if not forces:  # If no other forces are detected, assume London Dispersion is dominant
+        forces.append("London Dispersion Forces")
+
+    # Special case: For ionic compounds, check if there's a '+' or '-' in SMILES
+    if '+' in smiles or '-' in smiles:
+        forces.append("Ionic Bonding")
+
+    return forces
+
+
+# Example usage
+if __name__ == "__main__":
+    smiles = input("Enter the SMILES string of the molecule: ")  # User input for molecule SMILES string
+    forces = identify_intermolecular_forces(smiles)
+    print(f"Intermolecular Forces for {smiles}: {forces}")
+
+    # Another example with an ionic compound (NaCl)
+    smiles_ionic = "[Na+].[Cl-]"  # Sodium chloride
+    forces_ionic = identify_intermolecular_forces(smiles_ionic)
+    print(f"Intermolecular Forces for {smiles_ionic}: {forces_ionic}")
+
+
